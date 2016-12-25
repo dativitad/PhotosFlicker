@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">PhotosFlicker</string>
+    <string name="api_key">067fd7b5e23c0a4c956bc9375e6fe4ba</string>
+    <string name="secret">3ac7b33cb841c61b</string>
+
+    <string name="user_id">150311430@N03</string>
+</resources>
