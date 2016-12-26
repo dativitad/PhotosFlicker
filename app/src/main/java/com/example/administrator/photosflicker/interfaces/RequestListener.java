@@ -6,7 +6,7 @@ package com.example.administrator.photosflicker.interfaces;
 
 public interface RequestListener {
 
-    void startPhotoFlickerFragment();
+    void startPhotoFlickerFragment(long photosetId);
     void startDetailsFragment();
     boolean popBackStack();
 }

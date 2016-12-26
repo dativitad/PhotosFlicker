@@ -48,14 +48,15 @@ public class PhotosetsAdapter extends RecyclerView.Adapter<PhotosetsAdapter.Phot
     @Override
     public void onBindViewHolder(PhotosetsHolder holder, int position) {
 
-        Photoset photoset = photosetsList.get(position);
+        final Photoset photoset = photosetsList.get(position);
 
+        holder.photosetThumbnail.load(photoset.composeUrl());
         holder.photosetTitle.setText(photoset.getTitle().getContent());
 
         holder.root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestListener.startPhotoFlickerFragment();
+                requestListener.startPhotoFlickerFragment(photoset.getId());
             }
         });
 

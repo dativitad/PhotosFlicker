@@ -21,7 +21,7 @@ public class Photo {
     private int isfamily;
 
     public String composeUrl() {
-        return MessageFormat.format(Constants.PHOTOS_URL, farm, server, id, secret);
+        return String.format(Constants.PHOTOS_URL, farm, server, id, secret);
     }
 
     public long getId() {

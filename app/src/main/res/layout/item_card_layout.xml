@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.administrator.photosflicker.views.BetterRoundedLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="@dimen/activity_horizontal_margin"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="@dimen/activity_horizontal_margin"
     android:orientation="vertical">
 
     <LinearLayout
@@ -14,6 +15,7 @@
 
         <com.example.administrator.photosflicker.views.BetterImageView
             android:id="@+id/imageContent"
+            android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="400dp"
             tools:src="@mipmap/ic_launcher"/>
@@ -31,4 +33,4 @@
     </LinearLayout>
 
 
-</FrameLayout>
+</com.example.administrator.photosflicker.views.BetterRoundedLayout>

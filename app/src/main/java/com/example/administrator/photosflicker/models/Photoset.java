@@ -1,5 +1,7 @@
 package com.example.administrator.photosflicker.models;
 
+import com.example.administrator.photosflicker.utils.Constants;
+
 /**
  * Created by Administrator on 24.12.2016.
  */
@@ -22,6 +24,10 @@ public class Photoset {
     private int can_comment;
     private String date_create;
     private String date_update;
+
+    public String composeUrl() {
+        return String.format(Constants.PHOTOS_URL, farm, server, primary, secret);
+    }
 
     public long getId() {
         return id;

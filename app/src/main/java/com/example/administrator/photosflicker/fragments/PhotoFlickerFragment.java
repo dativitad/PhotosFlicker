@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import com.example.administrator.photosflicker.PhotosFlickerApp;
 import com.example.administrator.photosflicker.R;
 import com.example.administrator.photosflicker.adapters.CardsDataAdapter;
 import com.example.administrator.photosflicker.models.Photo;
@@ -15,7 +16,6 @@ import com.example.administrator.photosflicker.models.RootPhotosModel;
 import com.example.administrator.photosflicker.utils.Constants;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -33,6 +33,16 @@ public class PhotoFlickerFragment extends BaseFragment {
     public static final String TAG = "PhotoFlickerFragment";
 
     @BindView(R.id.swipeFlingAdapterView) SwipeFlingAdapterView swipeFlingAdapterView;
+
+    public static PhotoFlickerFragment newInstance(long photosetId) {
+
+        Bundle args = new Bundle();
+
+        PhotoFlickerFragment fragment = new PhotoFlickerFragment();
+        args.putLong(Constants.PHOTOSET_ID, photosetId);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -52,15 +62,19 @@ public class PhotoFlickerFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        sendCall();
+        long photosetId = getArguments().getLong(Constants.PHOTOSET_ID);
+
+        sendCall(photosetId);
 
     }
 
-    private void sendCall() {
+    private void sendCall(long photosetId) {
+
+//        initData(null);
 
         calls.getPhotosetPhotos(
                 Constants.PHOTOSET_PHOTOS_METHOD,
-                72157676595604961L
+                photosetId
         ).enqueue(new Callback<RootPhotosModel>() {
             @Override
             public void onResponse(Call<RootPhotosModel> call, Response<RootPhotosModel> response) {
@@ -79,9 +93,13 @@ public class PhotoFlickerFragment extends BaseFragment {
 
     private void initData(final List<Photo> photosList) {
 
-        final ArrayAdapter cardAdapter = new CardsDataAdapter(getContext(), photosList);
+        final ArrayAdapter cardAdapter = new CardsDataAdapter(
+                PhotosFlickerApp.getAppContext(),
+                photosList
+        );
 
         swipeFlingAdapterView.setAdapter(cardAdapter);
+        cardAdapter.notifyDataSetChanged();
         swipeFlingAdapterView.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
             public void onItemClicked(int i, Object o) {

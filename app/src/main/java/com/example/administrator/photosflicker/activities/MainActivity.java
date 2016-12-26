@@ -30,12 +30,12 @@ public class MainActivity extends AppCompatActivity implements RequestListener {
     }
 
     @Override
-    public void startPhotoFlickerFragment() {
+    public void startPhotoFlickerFragment(long photosetId) {
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(
                         R.id.mainContainer,
-                        new PhotoFlickerFragment(),
+                        PhotoFlickerFragment.newInstance(photosetId),
                         PhotoFlickerFragment.TAG
                 )
                 .addToBackStack(PhotoFlickerFragment.TAG)

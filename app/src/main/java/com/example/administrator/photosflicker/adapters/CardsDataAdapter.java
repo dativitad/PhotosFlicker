@@ -1,6 +1,9 @@
 package com.example.administrator.photosflicker.adapters;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -40,7 +43,7 @@ public class CardsDataAdapter extends ArrayAdapter<Photo> {
         View itemView = convertView;
 
         if (itemView == null) {
-            itemView = LayoutInflater.from(parent.getContext())
+            itemView =  LayoutInflater.from(parent.getContext())
                     .inflate(
                             R.layout.item_card_layout,
                             parent,
@@ -54,6 +57,7 @@ public class CardsDataAdapter extends ArrayAdapter<Photo> {
         }
 
         cardDataHolder.imageContent.load(photo.composeUrl());
+        cardDataHolder.textContent.setText(photo.getTitle());
 
         return itemView;
     }
@@ -69,9 +73,15 @@ public class CardsDataAdapter extends ArrayAdapter<Photo> {
         return photoList.get(position).getId();
     }
 
+    @Override
+    public int getCount() {
+        return photoList.size();
+    }
+
     public class CardDataHolder {
 
         @BindView(R.id.imageContent) BetterImageView imageContent;
+        @BindView(R.id.textContent) TextView textContent;
 
         CardDataHolder(View convertView) {
             ButterKnife.bind(this, convertView);
