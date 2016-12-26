@@ -1,25 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:gravity="center_vertical"
     android:layout_width="match_parent"
-    android:background="@android:color/white"
-    android:padding="@dimen/activity_horizontal_margin"
+    android:background="@android:color/holo_green_light"
     android:layout_height="@dimen/item_photoset_height">
 
-    <com.example.administrator.photosflicker.views.BetterCircleImageView
+    <com.example.administrator.photosflicker.views.BetterImageView
         android:id="@+id/photosetThumbnail"
-        android:layout_width="@dimen/photoset_thumb"
-        android:layout_height="@dimen/photoset_thumb"
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_photoset_height"
         tools:src="@mipmap/ic_launcher"/>
 
-    <TextView
-        android:id="@+id/photosetTitle"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/photoset_title_text_size"
-        tools:text="Title"/>
+    <LinearLayout
+        android:paddingStart="@dimen/twenty_five_dp"
+        android:paddingEnd="@dimen/twenty_five_dp"
+        android:paddingTop="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/activity_horizontal_margin"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+        android:background="@color/halfTransparent"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/photoset_thumb">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/photosetTitle"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/lightGray"
+            android:textStyle="bold"
+            android:textSize="@dimen/photoset_title_text_size"
+            tools:text="Title"/>
+
+        <TextView
+            android:id="@+id/photosetPhotoCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/lightGray"
+            android:textSize="@dimen/photoset_description_text_size"
+            tools:text="photos count"/>
+
+    </LinearLayout>
+
+
+</FrameLayout>

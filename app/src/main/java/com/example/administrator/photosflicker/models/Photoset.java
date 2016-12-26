@@ -26,7 +26,7 @@ public class Photoset {
     private String date_update;
 
     public String composeUrl() {
-        return String.format(Constants.PHOTOS_URL, farm, server, primary, secret);
+        return String.format(Constants.PHOTOS_URL, farm, server, primary, secret, Constants.MEDIUM_SIZE);
     }
 
     public long getId() {

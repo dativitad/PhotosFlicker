@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
@@ -13,70 +14,45 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.widget.FrameLayout;
 
+import com.example.administrator.photosflicker.R;
+
 /**
  * Created by rabbit on 12/26/16.
  */
 public class BetterRoundedLayout extends FrameLayout {
-    private final static float CORNER_RADIUS = 40.0f;
 
-    private Bitmap maskBitmap;
-    private Paint paint, maskPaint;
     private float cornerRadius;
 
     public BetterRoundedLayout(Context context) {
         super(context);
-        init(context);
+        init();
     }
 
     public BetterRoundedLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        init();
     }
 
     public BetterRoundedLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init(context);
+        init();
     }
 
-    private void init(Context context) {
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        cornerRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, CORNER_RADIUS, metrics);
-
-        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-
-        maskPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
-        maskPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-
+    private void init() {
         setWillNotDraw(false);
+        cornerRadius = getResources().getDimensionPixelSize(R.dimen.twenty_five_dp);
+    }
+
+    public void setCornerRadius(float cornerRadius) {
+        this.cornerRadius = cornerRadius;
     }
 
     @Override
     public void draw(Canvas canvas) {
-        Bitmap offscreenBitmap = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas offscreenCanvas = new Canvas(offscreenBitmap);
-
-        super.draw(offscreenCanvas);
-
-        if (maskBitmap == null) {
-            maskBitmap = createMask(canvas.getWidth(), canvas.getHeight());
-        }
-
-        offscreenCanvas.drawBitmap(maskBitmap, 0f, 0f, maskPaint);
-        canvas.drawBitmap(offscreenBitmap, 0f, 0f, paint);
-    }
-
-    private Bitmap createMask(int width, int height) {
-        Bitmap mask = Bitmap.createBitmap(width, height, Bitmap.Config.ALPHA_8);
-        Canvas canvas = new Canvas(mask);
-
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(Color.WHITE);
-
-        canvas.drawRect(0, 0, width, height, paint);
-
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        canvas.drawRoundRect(new RectF(0, 0, width, height), cornerRadius, cornerRadius, paint);
-
-        return mask;
+        Path clipPath = new Path();
+        RectF rect = new RectF(0, 0, this.getWidth(), this.getHeight());
+        clipPath.addRoundRect(rect, cornerRadius, cornerRadius, Path.Direction.CW);
+        canvas.clipPath(clipPath);
+        super.draw(canvas);
     }
 }

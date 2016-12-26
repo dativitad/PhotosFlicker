@@ -10,6 +10,7 @@ import com.example.administrator.photosflicker.R;
 import com.example.administrator.photosflicker.interfaces.RequestListener;
 import com.example.administrator.photosflicker.models.Photoset;
 import com.example.administrator.photosflicker.views.BetterCircleImageView;
+import com.example.administrator.photosflicker.views.BetterImageView;
 
 import java.util.List;
 
@@ -52,6 +53,7 @@ public class PhotosetsAdapter extends RecyclerView.Adapter<PhotosetsAdapter.Phot
 
         holder.photosetThumbnail.load(photoset.composeUrl());
         holder.photosetTitle.setText(photoset.getTitle().getContent());
+        holder.photosetPhotoCount.setText("photos: "+photoset.getPhotos());
 
         holder.root.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,8 +76,9 @@ public class PhotosetsAdapter extends RecyclerView.Adapter<PhotosetsAdapter.Phot
 
     public class PhotosetsHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.photosetThumbnail) BetterCircleImageView photosetThumbnail;
+        @BindView(R.id.photosetThumbnail) BetterImageView photosetThumbnail;
         @BindView(R.id.photosetTitle) TextView photosetTitle;
+        @BindView(R.id.photosetPhotoCount) TextView photosetPhotoCount;
         View root;
 
         public PhotosetsHolder(View itemView) {
