@@ -2,6 +2,7 @@ package com.example.administrator.photosflicker.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +24,11 @@ import butterknife.ButterKnife;
 
 public class CardsDataAdapter extends ArrayAdapter<Photo> {
 
+    private List<Photo> photoList;
+
     public CardsDataAdapter(Context context, List<Photo> photosList) {
         super(context, 0, photosList);
+        photoList = photosList;
     }
 
     @NonNull
@@ -52,6 +56,17 @@ public class CardsDataAdapter extends ArrayAdapter<Photo> {
         cardDataHolder.imageContent.load(photo.composeUrl());
 
         return itemView;
+    }
+
+    @Nullable
+    @Override
+    public Photo getItem(int position) {
+        return photoList.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return photoList.get(position).getId();
     }
 
     public class CardDataHolder {
