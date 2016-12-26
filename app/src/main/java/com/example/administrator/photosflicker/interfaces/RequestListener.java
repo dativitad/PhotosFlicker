@@ -8,4 +8,5 @@ public interface RequestListener {
 
     void startPhotoFlickerFragment();
     void startDetailsFragment();
+    boolean popBackStack();
 }

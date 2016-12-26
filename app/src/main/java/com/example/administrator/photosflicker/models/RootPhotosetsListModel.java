@@ -8,6 +8,10 @@ public class RootPhotosetsListModel extends BaseRootModel {
 
     private PhotosetsPaginationModel photosets;
 
+    public PhotosetsPaginationModel getPhotosets() {
+        return photosets;
+    }
+
     @Override
     public String toString() {
         return "RootPhotosetsListModel{" +

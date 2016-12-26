@@ -7,6 +7,7 @@ package com.example.administrator.photosflicker.utils;
 public class Constants {
 
     public static final String REST = "rest";
+    public static final String PHOTOS_URL = "https://farm{0}.staticflickr.com/{1}/{2}_{3}_b.jpg";
     public static String END_POINT = "https://api.flickr.com/services/";
     public static final String USER_ID = "user_id";
     public static final String PHOTOSET_ID = "photoset_id";
@@ -17,5 +18,6 @@ public class Constants {
     public static final String METHOD = "method";
     public static final String PHOTOSETS_LIST_METHOD = "flickr.photosets.getList";
     public static final String PHOTOSET_PHOTOS_METHOD = "flickr.photosets.getPhotos";
+    public static final int CODE_OK = 200;
 
 }

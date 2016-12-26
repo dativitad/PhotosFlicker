@@ -1,5 +1,9 @@
 package com.example.administrator.photosflicker.models;
 
+import com.example.administrator.photosflicker.utils.Constants;
+
+import java.text.MessageFormat;
+
 /**
  * Created by Administrator on 24.12.2016.
  */
@@ -15,6 +19,10 @@ public class Photo {
     private int ispublic;
     private int isfriend;
     private int isfamily;
+
+    public String composeUrl() {
+        return MessageFormat.format(Constants.PHOTOS_URL, farm, server, id, secret);
+    }
 
     public long getId() {
         return id;

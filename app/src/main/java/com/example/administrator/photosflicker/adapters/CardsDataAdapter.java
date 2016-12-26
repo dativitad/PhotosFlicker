@@ -9,31 +9,57 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.administrator.photosflicker.R;
+import com.example.administrator.photosflicker.models.Photo;
+import com.example.administrator.photosflicker.views.BetterImageView;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 24.12.2016.
  */
 
-public class CardsDataAdapter extends ArrayAdapter<String> {
+public class CardsDataAdapter extends ArrayAdapter<Photo> {
 
-    public CardsDataAdapter(Context context, List<String> objects) {
-        super(context, 0, objects);
+    public CardsDataAdapter(Context context, List<Photo> photosList) {
+        super(context, 0, photosList);
     }
 
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
-        String imageUrl = getItem(position);
+        Photo photo = getItem(position);
+        CardDataHolder cardDataHolder;
+        View itemView = convertView;
 
-        if (convertView == null) {
-            convertView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_card_layout, parent, false);
+        if (itemView == null) {
+            itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(
+                            R.layout.item_card_layout,
+                            parent,
+                            false
+                    );
+            cardDataHolder = new CardDataHolder(itemView);
+
+            itemView.setTag(cardDataHolder);
+        } else {
+            cardDataHolder = (CardDataHolder) itemView.getTag();
         }
-        TextView v = (TextView)(convertView.findViewById(R.id.textContent));
-        v.setText(imageUrl);
-        return convertView;
+
+        cardDataHolder.imageContent.load(photo.composeUrl());
+
+        return itemView;
+    }
+
+    public class CardDataHolder {
+
+        @BindView(R.id.imageContent) BetterImageView imageContent;
+
+        CardDataHolder(View convertView) {
+            ButterKnife.bind(this, convertView);
+        }
     }
 }
