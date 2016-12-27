@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ProgressBar
+        android:layout_gravity="center"
+        android:id="@+id/progress"
+        android:layout_width="@dimen/photoset_thumb"
+        android:layout_height="@dimen/photoset_thumb" />
+
     <com.lorentzos.flingswipe.SwipeFlingAdapterView
         android:id="@+id/swipeFlingAdapterView"
+        android:background="@color/shadow"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:rotation_degrees="16"
         app:max_visible="4"
         app:min_adapter_stack="6" />
 
-</LinearLayout>
+</FrameLayout>

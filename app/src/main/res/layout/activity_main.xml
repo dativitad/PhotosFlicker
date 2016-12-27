@@ -9,4 +9,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <FrameLayout
+        android:id="@+id/splashScreen"
+        android:background="@color/lightBrown"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="@dimen/item_photoset_height"
+            android:layout_height="wrap_content"
+            android:src="@drawable/splash"/>
+
+
+    </FrameLayout>
+
 </FrameLayout>

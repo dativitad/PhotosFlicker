@@ -1,45 +1,45 @@
 package com.example.administrator.photosflicker.views;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.photosflicker.R;
 
 /**
- * Created by rabbit on 12/26/16.
+ * Created by rabbit on 12/27/16.
  */
-public class BetterRoundedLayout extends FrameLayout {
+public class BetterRoundedImageView extends ImageView {
 
     private float cornerRadius;
 
-    public BetterRoundedLayout(Context context) {
+    public BetterRoundedImageView(Context context) {
         super(context);
         init();
     }
 
-    public BetterRoundedLayout(Context context, AttributeSet attrs) {
+    public BetterRoundedImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public BetterRoundedLayout(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+    public BetterRoundedImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         init();
     }
 
+    public void load(String url) {
+        Glide.with(getContext())
+                .load(url)
+                .placeholder(R.mipmap.ic_launcher)
+                .into(this);
+    }
+
     private void init() {
-        setWillNotDraw(false);
         cornerRadius = getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
     }
 

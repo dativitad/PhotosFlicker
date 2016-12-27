@@ -1,16 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    android:background="@android:color/holo_purple"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="@dimen/photoset_title_text_size"
-        android:text="Detail photo preview"/>
+    <com.example.administrator.photosflicker.views.BetterImageView
+        android:id="@+id/photoContent"
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/photo_size"
+        tools:src="@mipmap/ic_launcher"/>
 
-</FrameLayout>
+    <com.example.administrator.photosflicker.views.BetterRoundedLayout
+        android:background="@color/gray"
+        android:layout_marginTop="@dimen/five_dp"
+        android:layout_margin="@dimen/five_dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_margin="@dimen/five_dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="@dimen/photoset_title_text_size"
+            android:text="photo description and comments"/>
+
+        </com.example.administrator.photosflicker.views.BetterRoundedLayout>
+
+
+</LinearLayout>

@@ -10,11 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.photosflicker.R;
 import com.example.administrator.photosflicker.models.Photo;
 import com.example.administrator.photosflicker.views.BetterImageView;
+import com.example.administrator.photosflicker.views.BetterRoundedImageView;
 
 import java.util.List;
 
@@ -43,7 +45,7 @@ public class CardsDataAdapter extends ArrayAdapter<Photo> {
         View itemView = convertView;
 
         if (itemView == null) {
-            itemView =  LayoutInflater.from(parent.getContext())
+            itemView =  LayoutInflater.from(getContext())
                     .inflate(
                             R.layout.item_card_layout,
                             parent,
@@ -60,6 +62,11 @@ public class CardsDataAdapter extends ArrayAdapter<Photo> {
         cardDataHolder.textContent.setText(photo.getTitle());
 
         return itemView;
+    }
+
+    public void removeFirstObject() {
+        photoList.remove(0);
+        notifyDataSetChanged();
     }
 
     @Nullable
@@ -80,7 +87,9 @@ public class CardsDataAdapter extends ArrayAdapter<Photo> {
 
     public class CardDataHolder {
 
-        @BindView(R.id.imageContent) BetterImageView imageContent;
+        @BindView(R.id.imageContent) BetterRoundedImageView imageContent;
+        @BindView(R.id.hateIcon) ImageView hateIcon;
+        @BindView(R.id.likeIcon) ImageView likeIcon;
         @BindView(R.id.textContent) TextView textContent;
 
         CardDataHolder(View convertView) {

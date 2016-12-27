@@ -6,4 +6,7 @@
     <color name="lightBrown">#f18e3d</color>
     <color name="lightGray">#cb414141</color>
     <color name="halfTransparent">#89ffffff</color>
+    <color name="shadow">#9e000000</color>
+    <color name="white">#fff</color>
+    <color name="gray">#e1e1e1</color>
 </resources>

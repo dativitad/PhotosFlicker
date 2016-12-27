@@ -8,7 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.administrator.photosflicker.PhotosFlickerApp;
 import com.example.administrator.photosflicker.R;
 import com.example.administrator.photosflicker.adapters.PhotosetsAdapter;
 import com.example.administrator.photosflicker.models.Photoset;
@@ -57,15 +59,19 @@ public class PhotosetsFragment extends BaseFragment {
                     @Override
                     public void onResponse(Call<RootPhotosetsListModel> call, Response<RootPhotosetsListModel> response) {
                         Log.d(TAG, "onResponse: getPhotosetsList !!!");
-                        Log.d(TAG, "onResponse: rootModel = "+response.body());
                         if(response.code() == Constants.CODE_OK) {
                             initData(response.body().getPhotosets().getPhotoset());
+                            requestListener.hideSplashScreen();
+                            return;
                         }
+                        Toast.makeText(PhotosFlickerApp.getAppContext(), getString(R.string.error), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onFailure(Call<RootPhotosetsListModel> call, Throwable t) {
                         Log.d(TAG, "onFailure: getPhotosetsList !!!");
+
+                        Toast.makeText(PhotosFlickerApp.getAppContext(), getString(R.string.error), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -75,7 +81,7 @@ public class PhotosetsFragment extends BaseFragment {
                 photoset,
                 requestListener
         );
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
 
         photosetsRecycleView.setHasFixedSize(true);
         photosetsRecycleView.setLayoutManager(layoutManager);

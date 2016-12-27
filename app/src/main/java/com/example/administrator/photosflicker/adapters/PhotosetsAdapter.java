@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.example.administrator.photosflicker.R;
 import com.example.administrator.photosflicker.interfaces.RequestListener;
 import com.example.administrator.photosflicker.models.Photoset;
-import com.example.administrator.photosflicker.views.BetterCircleImageView;
 import com.example.administrator.photosflicker.views.BetterImageView;
 
 import java.util.List;
@@ -23,7 +22,7 @@ import butterknife.ButterKnife;
 
 public class PhotosetsAdapter extends RecyclerView.Adapter<PhotosetsAdapter.PhotosetsHolder> {
 
-    private final RequestListener requestListener;
+    private RequestListener requestListener;
     private List<Photoset> photosetsList;
 
     public PhotosetsAdapter(List<Photoset> photosetsList, RequestListener requestListener) {
@@ -33,34 +32,23 @@ public class PhotosetsAdapter extends RecyclerView.Adapter<PhotosetsAdapter.Phot
 
     @Override
     public PhotosetsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        View listItemView = LayoutInflater
+        return new PhotosetsHolder(LayoutInflater
                 .from(parent.getContext())
                 .inflate(
                         R.layout.item_photoset,
                         parent,
                         false
-                );
-        PhotosetsHolder photosetsHolder = new PhotosetsHolder(listItemView);
-        return photosetsHolder;
-
+                ));
     }
 
     @Override
     public void onBindViewHolder(PhotosetsHolder holder, int position) {
 
-        final Photoset photoset = photosetsList.get(position);
+        Photoset photoset = photosetsList.get(position);
 
         holder.photosetThumbnail.load(photoset.composeUrl());
         holder.photosetTitle.setText(photoset.getTitle().getContent());
         holder.photosetPhotoCount.setText("photos: "+photoset.getPhotos());
-
-        holder.root.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requestListener.startPhotoFlickerFragment(photoset.getId());
-            }
-        });
 
     }
 
@@ -79,11 +67,18 @@ public class PhotosetsAdapter extends RecyclerView.Adapter<PhotosetsAdapter.Phot
         @BindView(R.id.photosetThumbnail) BetterImageView photosetThumbnail;
         @BindView(R.id.photosetTitle) TextView photosetTitle;
         @BindView(R.id.photosetPhotoCount) TextView photosetPhotoCount;
-        View root;
 
         public PhotosetsHolder(View itemView) {
             super(itemView);
-            root = itemView;
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    requestListener.startPhotoFlickerFragment(
+                            photosetsList.get(getAdapterPosition())
+                                    .getId()
+                    );
+                }
+            });
             ButterKnife.bind(this, itemView);
         }
     }

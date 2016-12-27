@@ -7,6 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.administrator.photosflicker.PhotosFlickerApp;
 import com.example.administrator.photosflicker.R;
@@ -16,6 +19,7 @@ import com.example.administrator.photosflicker.models.RootPhotosModel;
 import com.example.administrator.photosflicker.utils.Constants;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -32,7 +36,11 @@ public class PhotoFlickerFragment extends BaseFragment {
 
     public static final String TAG = "PhotoFlickerFragment";
 
+    private ImageView hateIcon;
+    private ImageView likeIcon;
+
     @BindView(R.id.swipeFlingAdapterView) SwipeFlingAdapterView swipeFlingAdapterView;
+    @BindView(R.id.progress) ProgressBar progress;
 
     public static PhotoFlickerFragment newInstance(long photosetId) {
 
@@ -70,8 +78,6 @@ public class PhotoFlickerFragment extends BaseFragment {
 
     private void sendCall(long photosetId) {
 
-//        initData(null);
-
         calls.getPhotosetPhotos(
                 Constants.PHOTOSET_PHOTOS_METHOD,
                 photosetId
@@ -81,20 +87,25 @@ public class PhotoFlickerFragment extends BaseFragment {
                 Log.d(TAG, "onResponse: getPhotosetPhotos !!!");
                 if(response.code() == Constants.CODE_OK) {
                     initData(response.body().getPhotoset().getPhoto());
+                    progress.setVisibility(View.GONE);
+                    return;
                 }
+                Toast.makeText(getContext(), getString(R.string.error), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Call<RootPhotosModel> call, Throwable t) {
                 Log.d(TAG, "onFailure: getPhotosetPhotos !!!");
+                Toast.makeText(getContext(), getString(R.string.error), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+
     private void initData(final List<Photo> photosList) {
 
-        final ArrayAdapter cardAdapter = new CardsDataAdapter(
-                PhotosFlickerApp.getAppContext(),
+        final CardsDataAdapter cardAdapter = new CardsDataAdapter(
+                getContext(),
                 photosList
         );
 
@@ -102,26 +113,28 @@ public class PhotoFlickerFragment extends BaseFragment {
         cardAdapter.notifyDataSetChanged();
         swipeFlingAdapterView.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
-            public void onItemClicked(int i, Object o) {
-                Log.d(TAG, "onItemClicked: i = "+ i +" o = "+o);
+            public void onItemClicked(int i, Object photo) {
+                Log.d(TAG, "onItemClicked: i = "+ i +" photo = "+photo);
+
+                requestListener.startDetailsFragment((Photo) photo);
             }
         });
         swipeFlingAdapterView.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
             public void removeFirstObjectInAdapter() {
-                photosList.remove(0);
-                cardAdapter.notifyDataSetChanged();
+                cardAdapter.removeFirstObject();
+                hateIcon = null;
                 Log.d(TAG, "removeFirstObjectInAdapter: !!!");
             }
 
             @Override
-            public void onLeftCardExit(Object o) {
-                Log.d(TAG, "onLeftCardExit: o = "+o);
+            public void onLeftCardExit(Object photo) {
+                Log.d(TAG, "onLeftCardExit: o = "+photo);
             }
 
             @Override
-            public void onRightCardExit(Object o) {
-                Log.d(TAG, "onRightCardExit: o = "+o);
+            public void onRightCardExit(Object photo) {
+                Log.d(TAG, "onRightCardExit: o = "+photo);
             }
 
             @Override
@@ -135,7 +148,28 @@ public class PhotoFlickerFragment extends BaseFragment {
             @Override
             public void onScroll(float v) {
                 Log.d(TAG, "onScroll: v = "+v);
+                if(hateIcon == null) {
+                    hateIcon = (ImageView) swipeFlingAdapterView.getSelectedView().findViewById(R.id.hateIcon);
+                    likeIcon = (ImageView) swipeFlingAdapterView.getSelectedView().findViewById(R.id.likeIcon);
+                }
+
+                if(v < 0) {
+                    smartSetViewAlpha(hateIcon, Math.abs(v));
+                } else if (v > 0) {
+                    smartSetViewAlpha(likeIcon, v);
+                } else if(v == 0) {
+                    smartSetViewAlpha(hateIcon, v);
+                    smartSetViewAlpha(likeIcon, v);
+                }
+
             }
         });
     }
+
+    private void smartSetViewAlpha(View view, float alpha) {
+        if(view.getAlpha() != alpha) {
+            view.setAlpha(alpha);
+        }
+    }
+
 }
