@@ -9,6 +9,7 @@ public class Constants {
     public static final String REST = "rest";
     public static final String PHOTOS_URL = "https://farm%d.staticflickr.com/%d/%d_%s_%s.jpg";
     public static final String PHOTO_CONTENT = "photo_content";
+    public static final String CANCELED = "Canceled";
     public static String END_POINT = "https://api.flickr.com/services/";
     public static final String USER_ID = "user_id";
     public static final String PHOTOSET_ID = "photoset_id";

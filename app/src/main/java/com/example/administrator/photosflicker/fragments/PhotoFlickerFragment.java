@@ -1,7 +1,10 @@
 package com.example.administrator.photosflicker.fragments;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,7 @@ import android.widget.Toast;
 import com.example.administrator.photosflicker.PhotosFlickerApp;
 import com.example.administrator.photosflicker.R;
 import com.example.administrator.photosflicker.adapters.CardsDataAdapter;
+import com.example.administrator.photosflicker.interfaces.RestAPI;
 import com.example.administrator.photosflicker.models.Photo;
 import com.example.administrator.photosflicker.models.RootPhotosModel;
 import com.example.administrator.photosflicker.utils.Constants;
@@ -38,6 +42,8 @@ public class PhotoFlickerFragment extends BaseFragment {
 
     private ImageView hateIcon;
     private ImageView likeIcon;
+
+    private Call<RootPhotosModel> rootPhotoModelCall;
 
     @BindView(R.id.swipeFlingAdapterView) SwipeFlingAdapterView swipeFlingAdapterView;
     @BindView(R.id.progress) ProgressBar progress;
@@ -71,17 +77,22 @@ public class PhotoFlickerFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         long photosetId = getArguments().getLong(Constants.PHOTOSET_ID);
-
+        progress.getIndeterminateDrawable().setColorFilter(
+                ContextCompat.getColor(getContext(), R.color.lightBrown),
+                PorterDuff.Mode.MULTIPLY
+        );
         sendCall(photosetId);
 
     }
 
     private void sendCall(long photosetId) {
 
-        calls.getPhotosetPhotos(
+        rootPhotoModelCall = calls.getPhotosetPhotos(
                 Constants.PHOTOSET_PHOTOS_METHOD,
                 photosetId
-        ).enqueue(new Callback<RootPhotosModel>() {
+        );
+
+        rootPhotoModelCall.enqueue(new Callback<RootPhotosModel>() {
             @Override
             public void onResponse(Call<RootPhotosModel> call, Response<RootPhotosModel> response) {
                 Log.d(TAG, "onResponse: getPhotosetPhotos !!!");
@@ -95,8 +106,10 @@ public class PhotoFlickerFragment extends BaseFragment {
 
             @Override
             public void onFailure(Call<RootPhotosModel> call, Throwable t) {
-                Log.d(TAG, "onFailure: getPhotosetPhotos !!!");
-                Toast.makeText(getContext(), getString(R.string.error), Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onFailure: getPhotosetPhotos !!! t = "+t);
+                if(!t.getMessage().equals(Constants.CANCELED)) {
+                    Toast.makeText(getContext(), getString(R.string.error), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -170,6 +183,16 @@ public class PhotoFlickerFragment extends BaseFragment {
         if(view.getAlpha() != alpha) {
             view.setAlpha(alpha);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if(!rootPhotoModelCall.isCanceled()) {
+            rootPhotoModelCall.cancel();
+        }
+
     }
 
 }
